@@ -1,0 +1,35 @@
+{
+
+    "manifest_version": 2,
+    "name": "Blackboard Notify",
+    "version": "0.1",
+  
+    "description": "Performs an action when Blackboard Collaborate Ultra events are detected",
+    "homepage_url": "https://github.com/jmann240/blackboard-notify",
+
+    "icons": {
+        "32": "icons/icon.svg",
+        "48": "icons/icon.svg",
+        "96": "icons/icon.svg"
+    },
+
+    "permissions": [
+        "activeTab",
+        "storage",
+        "http://lamp.ejrobotics.com/*"
+    ],
+
+    "browser_action": {
+        "default_icon": "icons/icon.svg",
+        "default_title": "Notify Settings",
+        "default_popup": "popup/settings.html"
+    },
+  
+    "content_scripts": [
+      {
+        "matches": ["https://us.bbcollab.com/*"],
+        "js": ["content_scripts/notify.js"]
+      }
+    ]
+  
+  }
