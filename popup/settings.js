@@ -8,7 +8,9 @@ browser.storage.local.get("checked").then((obj) => {
 });
 
 browser.storage.local.get("url").then((obj) => {
-    url_input.value = obj.url;
+    if (obj.url != undefined) {
+        url_input.value = obj.url;
+    }
 });
 
 

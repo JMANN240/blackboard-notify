@@ -16,7 +16,7 @@
     "permissions": [
         "activeTab",
         "storage",
-        "http://lamp.ejrobotics.com/*"
+        "<all_urls>"
     ],
 
     "browser_action": {
