@@ -10,27 +10,23 @@ browser.storage.local.get("url").then((obj) => {
     url = obj.url;
 });
 
-let participant_observer = new MutationObserver((mutations, observer) => {
-    previous_participants = participants;
-    participants = parseInt(mutations[0].target.textContent.split(' ')[0]);
-        if (listening && previous_participants < participants) {
-            browser.storage.local.get("url").then((obj) => {
-                var req = new XMLHttpRequest();
-                req.open("GET", obj.url);
-                req.send();
-            });
-        }
-});
+var participants_tab_xpath = "//*[@id='panel-control-participants']";
 
-let page_observer = new MutationObserver((mutations, observer) => {
-    let participants_header = document.getElementById("participants-header");
-    if (participants_header != null) {
-        participants = parseInt(participants_header.children[0].innerHTML.split(' ')[0]);
-        participant_observer.observe(participants_header.children[0], {childList: true});
-    } else {
-        participant_observer.disconnect();
+var participants_tab_node = document.evaluate(participants_tab_xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+
+let participant_observer = new MutationObserver((mutations, observer) => {
+    var old_value = parseInt(mutations[0].oldValue.split(' ')[1]);
+    var new_value = parseInt(mutations[0].target.getAttribute("aria-label").split(' ')[1]);
+    if (listening && new_value > old_value) {
+        browser.storage.local.get("url").then((obj) => {
+            var req = new XMLHttpRequest();
+            req.open("GET", obj.url);
+            req.send();
+        });
     }
 });
+
+participant_observer.observe(participants_tab_node, {attributeFilter: ["aria-label"], attributeOldValue: true});
 
 browser.runtime.onMessage.addListener((message) => {
     if (message.message == "check") {
@@ -39,5 +35,3 @@ browser.runtime.onMessage.addListener((message) => {
         url = message.url;
     }
 });
-
-page_observer.observe(document.body, {subtree: true, childList: true});

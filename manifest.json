@@ -2,7 +2,7 @@
 
     "manifest_version": 2,
     "name": "Blackboard Notify",
-    "version": "0.1",
+    "version": "0.2.0",
   
     "description": "Performs an action when Blackboard Collaborate Ultra events are detected",
     "homepage_url": "https://github.com/jmann240/blackboard-notify",
